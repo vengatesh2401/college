@@ -1,0 +1,127 @@
+/* ============================================================
+   ClubQuest — responsive layer (phones, tablets, laptops, large screens)
+   Loaded AFTER style.css. Breakpoints: 1200 / 980 / 768 / 640 / 400
+   ============================================================ */
+
+/* ---- global safety: nothing may cause sideways scrolling ---- */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{overflow-x:hidden}
+img,svg,video,canvas,iframe{max-width:100%}
+.container,.narrow,.narrow-2{width:min(1180px,100% - clamp(1.25rem,5vw,2.5rem))}
+h1,h2,h3{overflow-wrap:anywhere}
+.table-wrap{-webkit-overflow-scrolling:touch}
+:root{--tap:44px}
+
+/* ---- touch devices: bigger targets, no hover-only menus, no iOS input zoom ---- */
+@media (hover:none),(pointer:coarse){
+  .btn,.icon-btn,.tabs a,.pagination a,.interest span,.check{min-height:var(--tap)}
+  .btn-sm{min-height:40px}
+  input:not([type=checkbox]):not([type=radio]),select,textarea{font-size:16px}
+  .user-menu:hover .user-dropdown{opacity:0;visibility:hidden}
+  .user-menu.open .user-dropdown{opacity:1;visibility:visible;transform:none}
+  .club-card:hover,.stat-card:hover,.event-card:hover,.mini-club:hover{transform:none}
+}
+
+/* ---- large screens ---- */
+@media (min-width:1600px){
+  .container{width:min(1360px,100% - 4rem)} .card-grid{grid-template-columns:repeat(auto-fill,minmax(310px,1fr))}
+  .dash-content{max-width:1500px}
+}
+
+/* ---- small laptops / landscape tablets ---- */
+@media (max-width:1200px){
+  .search-box{width:190px} .search-box:focus-within{width:230px}
+  .main-nav>a{padding:.45rem .6rem}
+  .clubs-layout{grid-template-columns:240px 1fr;gap:1.4rem}
+  .club-hero-inner{grid-template-columns:auto 1fr 290px;gap:1.4rem}
+  .logo-xl{width:96px;height:96px}
+}
+
+/* ---- tablets & below: navigation collapses (style.css already handles menu/sidebar) ---- */
+@media (max-width:980px){
+  .site-header{position:sticky}
+  .nav-toggle{width:44px;height:44px;border-radius:12px}
+  .main-nav>a{padding:.8rem 1rem;border-radius:12px;font-size:1rem}
+  .card-grid,.card-grid.cols-3{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+  .stat-grid{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+  .chart-grid{grid-template-columns:1fr}
+  .club-hero-inner{grid-template-columns:auto 1fr} .club-hero-inner .join-box{grid-column:1/-1}
+  .footer-grid{grid-template-columns:1fr 1fr} .footer-grid>div:first-child{grid-column:1/-1}
+  .sidebar-backdrop{position:fixed;inset:0;background:rgba(10,6,24,.55);z-index:60;opacity:0;visibility:hidden;transition:.3s}
+  .sidebar-backdrop.show{opacity:1;visibility:visible}
+}
+
+/* ---- large phones / small tablets ---- */
+@media (max-width:768px){
+  body{padding-bottom:calc(68px + env(safe-area-inset-bottom))}      /* room for bottom tab bar */
+  h2{font-size:1.35rem}
+  .section{padding:2.2rem 0} .section-head{flex-wrap:wrap}
+  .page-head{padding:1.6rem 0 .8rem}
+  .hero{padding:2rem 0 1.5rem} .hero-stats{gap:1.2rem 1.8rem}
+  .club-hero{padding:1.8rem 0 1rem} .club-hero-inner{grid-template-columns:1fr;justify-items:start}
+  .detail-grid{grid-template-columns:1fr}
+  .auth-wrap{margin:1.5rem auto;gap:1.5rem} .auth-art{display:none}
+  .inline-filter{flex-direction:column} .inline-filter input,.inline-filter select,.inline-filter .btn{width:100%;min-width:0}
+  .toolbar{flex-direction:column;align-items:stretch} .toolbar .btn{width:100%}
+  .form-actions{flex-direction:column} .form-actions .btn{width:100%}
+  .dash-content{padding:1rem .9rem 5rem} .dash-top{padding:.7rem .9rem} .dash-top h1{font-size:1.2rem}
+  .mini-stats div{flex:1 1 calc(50% - .5rem)}
+  .stat-card{padding:.9rem} .stat-card b{font-size:1.5rem}
+  .wrap{max-width:none}
+
+  /* tables -> stacked cards on phones (labels injected by app.js) */
+  .table-wrap{background:transparent;border:0;overflow:visible}
+  .table,.table tbody,.table tr,.table td{display:block;width:100%}
+  .table thead{position:absolute;left:-9999px}
+  .table tr{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);margin-bottom:.8rem;padding:.4rem .2rem;box-shadow:var(--shadow)}
+  .table td{display:flex;justify-content:space-between;align-items:center;gap:1rem;border:0;padding:.5rem .9rem;text-align:right}
+  .table td::before{content:attr(data-label);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);text-align:left;flex:none}
+  .table td[data-label=""]::before{display:none}
+  .table td.right{justify-content:flex-end;flex-wrap:wrap}
+  .table td[colspan]{display:block;text-align:center}.table td[colspan]::before{display:none}
+
+  /* mobile bottom tab bar */
+  .bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:55;display:flex;background:color-mix(in srgb,var(--surface) 94%,transparent);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:.35rem .4rem calc(.35rem + env(safe-area-inset-bottom));box-shadow:0 -8px 24px -12px rgba(30,22,54,.25)}
+  .bottom-nav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:.15rem;padding:.45rem .2rem;border-radius:12px;color:var(--muted);font-size:.7rem;font-weight:600;min-height:var(--tap)}
+  .bottom-nav a i{font-size:1.15rem}
+  .bottom-nav a.active{color:var(--primary)} .bottom-nav a.active i{transform:translateY(-1px)}
+  .bottom-nav a:hover{text-decoration:none}
+  .user-chip .uname{display:none}
+  .search-results{min-width:0;position:static;margin-top:.4rem}
+}
+
+/* ---- phones ---- */
+@media (max-width:640px){
+  .container,.narrow,.narrow-2{width:calc(100% - 1.5rem)}
+  .card{padding:1.1rem} .card-grid,.card-grid.cols-3{grid-template-columns:1fr}
+  .hero-search{flex-direction:column;align-items:stretch;border-radius:22px;padding:.8rem} .hero-search i{display:none}
+  .hero-search input{width:100%;border:1.5px solid var(--line)!important;border-radius:12px;padding:.7rem .9rem!important;background:var(--surface)!important} .hero-search .btn{width:100%}
+  .interest-picker .btn{width:100%}
+  .event-card{grid-template-columns:auto 1fr;padding:1rem} .event-action .btn{width:100%}
+  .date-tile{width:54px;height:60px} .date-tile b{font-size:1.4rem}
+  .club-hero h1{font-size:1.8rem} .logo-xl{width:84px;height:84px;font-size:1.8rem;border-radius:22px}
+  .tabs{display:flex;width:100%;overflow-x:auto} .tabs a{flex:1;text-align:center;white-space:nowrap}
+  .notif{flex-wrap:wrap} .notif small{width:100%}
+  .row-line{flex-wrap:wrap;gap:.3rem .8rem} .row-line small{margin-left:0}
+  .stat-grid{grid-template-columns:1fr 1fr} .chart{min-height:180px}
+  .pagination{flex-wrap:wrap}
+  .footer-grid{grid-template-columns:1fr}
+  .alert{font-size:.92rem}
+}
+
+/* ---- very small phones ---- */
+@media (max-width:400px){
+  h1{font-size:1.75rem} .hero-stats b{font-size:1.5rem}
+  .stat-grid{grid-template-columns:1fr} .mini-stats div{flex-basis:100%}
+  .bottom-nav a{font-size:.64rem}
+}
+
+/* ---- landscape phones: shorter header/hero ---- */
+@media (max-height:480px) and (orientation:landscape){
+  .nav-wrap{min-height:56px} .hero{padding:1.2rem 0} .main-nav{inset:56px 0 auto 0;max-height:calc(100vh - 56px)}
+  body{padding-bottom:calc(58px + env(safe-area-inset-bottom))}
+}
+
+/* bottom nav & backdrop never show on desktop */
+@media (min-width:769px){.bottom-nav{display:none}}
+@media (min-width:981px){.sidebar-backdrop{display:none}}
