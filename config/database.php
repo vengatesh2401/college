@@ -1,6 +1,5 @@
-
 <?php
-declare(strict_types=1);
+
 
 // Database settings from Render Environment Variables
 define('DB_HOST', getenv('DB_HOST') ?: '127.0.0.1');
