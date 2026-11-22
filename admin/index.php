@@ -16,7 +16,13 @@ $reqStatus = $pdo->query('SELECT status label, COUNT(*) value FROM membership_re
 $byCat = $pdo->query('SELECT cat.id, cat.name AS label, COUNT(m.id) AS value FROM club_categories cat LEFT JOIN clubs c ON c.category_id=cat.id LEFT JOIN club_members m ON m.club_id=c.id GROUP BY cat.id, cat.name HAVING COUNT(m.id) > 0 ORDER BY value DESC, cat.name')->fetchAll();
 $monthly = [];
 for ($i = 5; $i >= 0; $i--) $monthly[date('M', strtotime("-$i month"))] = 0;
-foreach ($pdo->query('SELECT DATE_FORMAT(joined_at,"%b") m, COUNT(*) n FROM club_members WHERE joined_at >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH) GROUP BY YEAR(joined_at), MONTH(joined_at)')->fetchAll() as $r) if (isset($monthly[$r['m']])) $monthly[$r['m']] = (int)$r['n'];
+foreach ($pdo->query('SELECT
+    DATE_FORMAT(MIN(joined_at), '%b') AS m,
+    COUNT(*) AS n
+FROM club_members
+WHERE joined_at >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+GROUP BY YEAR(joined_at), MONTH(joined_at)
+ORDER BY YEAR(MIN(joined_at)), MONTH(MIN(joined_at))')->fetchAll() as $r) if (isset($monthly[$r['m']])) $monthly[$r['m']] = (int)$r['n'];
 $monthlyRows = array_map(fn($k, $v) => ['label' => $k, 'value' => $v], array_keys($monthly), $monthly);
 $recent = $pdo->query('SELECT r.id, u.name student, c.name club, r.created_at FROM membership_requests r JOIN users u ON u.id=r.user_id JOIN clubs c ON c.id=r.club_id WHERE r.status="pending" ORDER BY r.created_at DESC LIMIT 5')->fetchAll();
 
