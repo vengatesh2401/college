@@ -13,7 +13,7 @@ $stats = [
 ];
 $topClubs = $pdo->query('SELECT c.name label, COUNT(m.id) value FROM clubs c LEFT JOIN club_members m ON m.club_id=c.id GROUP BY c.id, c.name ORDER BY value DESC, c.name LIMIT 6')->fetchAll();
 $reqStatus = $pdo->query('SELECT status label, COUNT(*) value FROM membership_requests GROUP BY status')->fetchAll();
-$byCat = $pdo->query('SELECT cat.name label, COUNT(m.id) value FROM club_categories cat LEFT JOIN clubs c ON c.category_id=cat.id LEFT JOIN club_members m ON m.club_id=c.id GROUP BY cat.id HAVING value>0 ORDER BY value DESC')->fetchAll();
+$byCat = $pdo->query('SELECT cat.id, cat.name AS label, COUNT(m.id) AS value FROM club_categories cat LEFT JOIN clubs c ON c.category_id=cat.id LEFT JOIN club_members m ON m.club_id=c.id GROUP BY cat.id, cat.name HAVING COUNT(m.id) > 0 ORDER BY value DESC, cat.name')->fetchAll();
 $monthly = [];
 for ($i = 5; $i >= 0; $i--) $monthly[date('M', strtotime("-$i month"))] = 0;
 foreach ($pdo->query('SELECT DATE_FORMAT(joined_at,"%b") m, COUNT(*) n FROM club_members WHERE joined_at >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH) GROUP BY YEAR(joined_at), MONTH(joined_at)')->fetchAll() as $r) if (isset($monthly[$r['m']])) $monthly[$r['m']] = (int)$r['n'];
