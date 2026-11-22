@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 // Database settings from Render Environment Variables
 define('DB_HOST', getenv('DB_HOST') ?: '127.0.0.1');
-define('DB_PORT', getenv('DB_PORT') ?: '3306');
+define('DB_PORT', getenv('DB_PORT') ?: '4000');
 define('DB_NAME', getenv('DB_NAME') ?: 'college_club_finder');
 define('DB_USER', getenv('DB_USER') ?: 'root');
 define('DB_PASS', getenv('DB_PASS') ?: '');
