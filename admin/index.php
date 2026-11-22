@@ -11,7 +11,7 @@ $stats = [
     ['fa-calendar-days', 'Upcoming events', $one('SELECT COUNT(*) FROM events WHERE event_date>=NOW()'), 'events'],
     ['fa-ticket', 'Event sign-ups', $one('SELECT COUNT(*) FROM event_registrations'), 'events'],
 ];
-$topClubs = $pdo->query('SELECT c.name label, COUNT(m.id) value FROM clubs c LEFT JOIN club_members m ON m.club_id=c.id GROUP BY c.id ORDER BY value DESC, c.name LIMIT 6')->fetchAll();
+$topClubs = $pdo->query('SELECT c.name label, COUNT(m.id) value FROM clubs c LEFT JOIN club_members m ON m.club_id=c.id GROUP BY c.id, c.name ORDER BY value DESC, c.name LIMIT 6')->fetchAll();
 $reqStatus = $pdo->query('SELECT status label, COUNT(*) value FROM membership_requests GROUP BY status')->fetchAll();
 $byCat = $pdo->query('SELECT cat.name label, COUNT(m.id) value FROM club_categories cat LEFT JOIN clubs c ON c.category_id=cat.id LEFT JOIN club_members m ON m.club_id=c.id GROUP BY cat.id HAVING value>0 ORDER BY value DESC')->fetchAll();
 $monthly = [];
